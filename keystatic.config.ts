@@ -10,7 +10,7 @@ export default config({
   storage:
     process.env.NODE_ENV === "development"
       ? { kind: "local" }
-      : { kind: "github", repo: "OWNER/REPO" }, // TODO: replace with <github-user>/<repo>
+      : { kind: "github", repo: "sheddyboy/portfolio" },
   ui: {
     brand: { name: "Portfolio CMS" },
     navigation: {
