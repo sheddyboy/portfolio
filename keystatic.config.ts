@@ -7,8 +7,10 @@ const projectImages = {
 };
 
 export default config({
+  // Local files in dev, GitHub in production. For the one-time GitHub App setup,
+  // run `NEXT_PUBLIC_KEYSTATIC_STORAGE=github pnpm dev` to use GitHub mode in dev.
   storage:
-    process.env.NODE_ENV === "development"
+    process.env.NODE_ENV === "development" && process.env.NEXT_PUBLIC_KEYSTATIC_STORAGE !== "github"
       ? { kind: "local" }
       : { kind: "github", repo: "sheddyboy/portfolio" },
   ui: {
