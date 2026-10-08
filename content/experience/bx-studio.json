@@ -1,0 +1,11 @@
+{
+  "company": "Bx Studio",
+  "role": "Frontend Engineer",
+  "startDate": "2022-01-01",
+  "endDate": "2023-01-01",
+  "bullets": [
+    "Led frontend development across 12+ client projects using React, JavaScript, and Webflow, building responsive\ninterfaces and reusable components for production applications.",
+    "Developed custom backend integrations using Xano as an API and data layer, implementing application logic and\ndata models supporting 50K+ records across multiple products.",
+    "Integrated third-party APIs and services including Stripe, Google Maps, and SendGrid, connecting frontend\nworkflows with payments, geolocation, and transactional communication services."
+  ]
+}

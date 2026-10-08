@@ -1,26 +1,171 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Design tokens. Dark is the default; .light overrides via the theme toggle. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --muted: #e2e8f0;
+  --muted-foreground: #475569;
+  --border: #cbd5e1;
+  --accent: #15803d;
+  --accent-soft: rgb(21 128 61 / 0.1);
+  --on-accent: #ffffff;
+  --destructive: #b91c1c;
+  --grid: rgb(15 23 42 / 0.05);
+}
+
+.dark {
+  --background: #0b1120;
+  --foreground: #f8fafc;
+  --card: #111a2e;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --border: #263247;
+  --accent: #22c55e;
+  --accent-soft: rgb(34 197 94 / 0.12);
+  --on-accent: #0f172a;
+  --destructive: #f87171;
+  --grid: rgb(148 163 184 / 0.06);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-on-accent: var(--on-accent);
+  --color-destructive: var(--destructive);
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Case study body (Markdoc output) */
+.case-study {
+  line-height: 1.75;
+  color: var(--muted-foreground);
+}
+.case-study > * + * {
+  margin-top: 1.25em;
+}
+.case-study h2 {
+  margin-top: 2.25em;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+}
+.case-study h3 {
+  margin-top: 1.75em;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+.case-study h2:first-child,
+.case-study h3:first-child {
+  margin-top: 0;
+}
+.case-study strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+.case-study a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.case-study ul,
+.case-study ol {
+  padding-left: 1.25em;
+}
+.case-study ul {
+  list-style: disc;
+}
+.case-study ol {
+  list-style: decimal;
+}
+.case-study li + li {
+  margin-top: 0.5em;
+}
+.case-study li::marker {
+  color: var(--accent);
+}
+.case-study code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
+  background: var(--muted);
+  color: var(--foreground);
+}
+.case-study pre {
+  overflow-x: auto;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+}
+.case-study pre code {
+  padding: 0;
+  background: none;
+}
+.case-study blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: 1rem;
+  font-style: italic;
+}
+.case-study img {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.case-study hr {
+  border-color: var(--border);
 }

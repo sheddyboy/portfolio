@@ -1,0 +1,13 @@
+{
+  "company": "Techinnover",
+  "role": "Full-Stack Engineer",
+  "startDate": "2024-01-01",
+  "endDate": "2025-01-01",
+  "bullets": [
+    "Architected and developed a production cinema booking platform using Next.js, FastAPI, and PostgreSQL,\nsupporting 10,000+ monthly users with real-time seat availability updates through WebSockets.",
+    "Designed and implemented RESTful APIs for authentication, seat allocation, payments, and booking workflows,\nintegrating Stripe and supporting 1,000+ daily transactions.",
+    "Optimized PostgreSQL queries using SQLAlchemy and introduced Redis caching, reducing API response times\nby 25% and improving performance across high-traffic application workflows.",
+    "Designed containerized services with Docker and deployed applications on AWS EC2, implementing automated\nbuild, test, and deployment workflows with GitHub Actions CI/CD.",
+    "Owned features from technical design through implementation, testing, code review, and production deployment;\ndelivered 15+ features, participated in 130+ code reviews, and mentored 3 junior developers."
+  ]
+}

@@ -1,0 +1,18 @@
+## The problem
+
+Teams keep their knowledge in PDFs, slide decks and wikis, and generic chatbots either hallucinate or leak documents between projects. DocRAG is a local-first knowledge platform where every answer is grounded in your own files and cites the exact page it came from.
+
+## How it works
+
+- **Asynchronous ingestion.** Uploads go to S3-compatible storage and a Celery pipeline parses PDF, DOCX, PPTX, HTML, Markdown and text, chunks it, and writes vectors to Qdrant and metadata to PostgreSQL.
+- **Hybrid retrieval.** Dense semantic embeddings and BM25-style sparse search run side by side; results are merged with Reciprocal Rank Fusion, then reordered by a cross-encoder reranker.
+- **Citation-aware chat.** Responses stream over Server-Sent Events with page-level source attribution and metadata filters.
+- **Strict isolation.** Every query is scoped to a user and project, so one knowledge base can never surface another's documents.
+
+## Measuring retrieval quality
+
+Rather than guessing whether a change helped, I integrated BEIR-based evaluation to benchmark dense, sparse, hybrid and reranked pipelines with standard IR metrics. It doubles as a regression test for search quality in CI.
+
+## Engineering
+
+Redis-backed job state, database migrations, cleanup across relational, vector and object storage, strict mypy, and integration tests with Pytest and Testcontainers running in GitHub Actions.

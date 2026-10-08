@@ -1,0 +1,11 @@
+{
+  "groups": [
+    { "name": "Languages", "items": ["Python", "TypeScript", "JavaScript", "SQL"] },
+    { "name": "Backend", "items": ["FastAPI", "Node.js", "Express.js", "REST APIs", "WebSockets", "Server-Sent Events", "Celery"] },
+    { "name": "AI & Retrieval", "items": ["RAG", "Hybrid Search", "Vector Search", "Embeddings", "Cross-Encoder Reranking", "LangGraph", "Ollama"] },
+    { "name": "Databases", "items": ["PostgreSQL", "MongoDB", "Redis", "Qdrant"] },
+    { "name": "Cloud & DevOps", "items": ["AWS (EC2, S3, Lambda)", "Docker", "GitHub Actions", "CI/CD"] },
+    { "name": "Frontend", "items": ["React", "Next.js", "Tailwind CSS"] },
+    { "name": "Testing", "items": ["Pytest", "Jest", "Vitest", "Testcontainers"] }
+  ]
+}

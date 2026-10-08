@@ -1,0 +1,13 @@
+{
+  "company": "Monomango",
+  "role": "Full-Stack Engineer",
+  "startDate": "2023-01-01",
+  "endDate": "2024-01-01",
+  "bullets": [
+    "Built and deployed 8+ production applications using React, TypeScript, Node.js, and PostgreSQL across\ne-commerce, healthcare, and education products.",
+    " Integrated AI-powered search functionality using vector embeddings and semantic search, improving search\naccuracy by 45% and user engagement by 30% through intelligent query understanding.",
+    "Collaborated on database schema design and optimized complex SQL queries for high-traffic endpoints serving\n100K+ monthly users, improving application responsiveness and scalability.",
+    "Designed secure RESTful APIs with Express.js, implementing authentication, authorization, input validation,\nand reusable middleware for application services.",
+    "Implemented Redis caching, automated testing with Jest and Supertest, and CI/CD workflows that reduced\ndeployment time from 2 hours to 15 minutes."
+  ]
+}

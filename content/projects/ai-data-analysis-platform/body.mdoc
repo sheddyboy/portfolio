@@ -1,0 +1,13 @@
+## The problem
+
+Analysing a dataset usually means writing Pandas by hand. This platform lets people upload structured data and ask questions in plain English, then get back tables and charts they can trust.
+
+## How it works
+
+- **Multi-stage agent workflow.** LangGraph coordinates query interpretation, dataset inspection, analysis planning, code generation, execution and response validation as reusable stages.
+- **Sandboxed execution.** Generated code runs in an isolated Python sandbox that supports Pandas transformations and Plotly visualisations without touching the core application.
+- **Typed APIs.** A FastAPI backend exposes typed endpoints to the Next.js frontend, with JWT access and refresh token flows.
+
+## Engineering
+
+Frontend, backend, database and execution sandbox are separate Docker services, which keeps responsibilities clear and deployment predictable.

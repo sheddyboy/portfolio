@@ -1,0 +1,28 @@
+{
+  "name": "Shadrack Itulah",
+  "headline": "Software Engineer building full-stack products and AI retrieval systems",
+  "bio": "Full-stack engineer with production experience across Next.js, FastAPI and PostgreSQL, now focused on RAG, hybrid search and agentic AI while completing an MSc in Computer Science at the University of Hertfordshire.",
+  "location": "Hatfield, United Kingdom",
+  "email": "shedrackitulah@gmail.com",
+  "github": "https://github.com/",
+  "linkedin": "https://www.linkedin.com/",
+  "resume": "/resume/Shadrack_Itulah_Resume.pdf",
+  "stats": [
+    {
+      "value": "10k+",
+      "label": "monthly users served"
+    },
+    {
+      "value": "20+",
+      "label": "production apps shipped"
+    },
+    {
+      "value": "130+",
+      "label": "code reviews"
+    },
+    {
+      "value": "5",
+      "label": "certifications"
+    }
+  ]
+}

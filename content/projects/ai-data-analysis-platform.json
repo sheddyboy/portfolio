@@ -1,0 +1,25 @@
+{
+  "title": "AI-Powered Data Analysis Platform",
+  "description": "Upload structured datasets and analyse them in plain English. LangGraph orchestrates planning, code generation and validation, running generated Pandas code in an isolated sandbox.",
+  "liveUrl": null,
+  "githubUrl": "https://github.com/",
+  "image": "/images/projects/ai-data-analysis-platform/image.png",
+  "tags": [
+    "react",
+    "nextjs",
+    "ai",
+    "python",
+    "fastapi"
+  ],
+  "featured": true,
+  "date": "2026-03-01",
+  "stack": [
+    "Next.js",
+    "FastAPI",
+    "PostgreSQL",
+    "LangGraph",
+    "Pandas",
+    "Plotly",
+    "Docker"
+  ]
+}
