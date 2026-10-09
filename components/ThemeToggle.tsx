@@ -12,7 +12,7 @@ function subscribe(callback: () => void) {
 const isDark = () => document.documentElement.classList.contains("dark");
 
 export function ThemeToggle() {
-  const dark = useSyncExternalStore(subscribe, isDark, () => true);
+  const dark = useSyncExternalStore(subscribe, isDark, () => false);
 
   function toggle() {
     const next = dark ? "light" : "dark";
@@ -29,9 +29,12 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
-      className="grid size-10 cursor-pointer place-items-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-accent hover:text-foreground"
+      suppressHydrationWarning
+      className="sticker-sm group relative grid size-10 cursor-pointer place-items-center overflow-hidden rounded-full bg-yellow text-ink transition-transform duration-300 [transition-timing-function:cubic-bezier(0.34,1.7,0.64,1)] hover:-rotate-12 hover:scale-110 active:scale-90"
     >
-      {dark ? <Sun className="size-4" /> : <Moon className="size-4" />}
+      {/* Both icons are always rendered; CSS picks one so there is no flash on load. */}
+      <Sun className="absolute size-5 transition-transform duration-500 [transition-timing-function:cubic-bezier(0.34,1.7,0.64,1)] dark:translate-y-8 dark:rotate-90" aria-hidden="true" />
+      <Moon className="absolute size-5 -translate-y-8 -rotate-90 transition-transform duration-500 [transition-timing-function:cubic-bezier(0.34,1.7,0.64,1)] dark:translate-y-0 dark:rotate-0" aria-hidden="true" />
     </button>
   );
 }

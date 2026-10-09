@@ -16,6 +16,7 @@ const NAV = [
 
 export function SiteHeader({ name }: { name: string }) {
   const [open, setOpen] = useState(false);
+  const [hovered, setHovered] = useState<string | null>(null);
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 200, damping: 30 });
   const initials = name
@@ -25,21 +26,33 @@ export function SiteHeader({ name }: { name: string }) {
     .slice(0, 2);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/75 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="font-mono text-sm font-semibold tracking-tight">
-          <span className="text-accent">~/</span>
-          {initials.toLowerCase() || "home"}
-        </Link>
+    <header className="sticky top-0 z-50 border-b-[2.5px] border-line bg-background/90 backdrop-blur-md">
+      <div className="wrap flex h-16 items-center justify-between">
+        <motion.div whileHover={{ rotate: -6, scale: 1.08 }} whileTap={{ scale: 0.9 }} transition={{ type: "spring", stiffness: 400, damping: 12 }}>
+          <Link href="/" className="sticker-sm inline-flex h-10 items-center rounded-full bg-pink px-4 font-mono text-sm font-bold text-ink">
+            <span aria-hidden="true">~/</span>
+            {initials.toLowerCase() || "home"}
+          </Link>
+        </motion.div>
 
-        <nav aria-label="Main" className="hidden items-center gap-1 sm:flex">
+        <nav aria-label="Main" className="hidden items-center gap-1 sm:flex" onMouseLeave={() => setHovered(null)}>
           {NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              onMouseEnter={() => setHovered(item.href)}
+              onFocus={() => setHovered(item.href)}
+              onBlur={() => setHovered(null)}
+              className="relative rounded-full px-4 py-2 text-sm font-semibold text-foreground"
             >
-              {item.label}
+              {hovered === item.href && (
+                <motion.span
+                  layoutId="nav-pill"
+                  className="absolute inset-0 -z-10 rounded-full bg-yellow"
+                  transition={{ type: "spring", stiffness: 500, damping: 26 }}
+                />
+              )}
+              <span className={hovered === item.href ? "text-ink" : undefined}>{item.label}</span>
             </Link>
           ))}
           <div className="ml-2">
@@ -55,7 +68,7 @@ export function SiteHeader({ name }: { name: string }) {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="grid size-10 cursor-pointer place-items-center rounded-lg border border-border"
+            className="sticker-sm grid size-10 cursor-pointer place-items-center rounded-full bg-card transition-transform active:scale-90"
           >
             {open ? <X className="size-4" /> : <Menu className="size-4" />}
           </button>
@@ -70,20 +83,25 @@ export function SiteHeader({ name }: { name: string }) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden border-t border-border sm:hidden"
+            transition={{ type: "spring", stiffness: 300, damping: 28 }}
+            className="overflow-hidden border-t-[2.5px] border-line sm:hidden"
           >
-            <ul className="flex flex-col px-4 py-2">
-              {NAV.map((item) => (
-                <li key={item.href}>
+            <ul className="flex flex-col gap-2 px-4 py-4">
+              {NAV.map((item, i) => (
+                <motion.li
+                  key={item.href}
+                  initial={{ x: -24, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 18, delay: i * 0.05 }}
+                >
                   <Link
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="block py-3 text-muted-foreground hover:text-foreground"
+                    className="sticker-sm block rounded-xl bg-card px-4 py-3 font-display text-lg font-bold"
                   >
                     {item.label}
                   </Link>
-                </li>
+                </motion.li>
               ))}
             </ul>
           </motion.nav>
@@ -92,8 +110,8 @@ export function SiteHeader({ name }: { name: string }) {
 
       <motion.div
         aria-hidden="true"
-        style={{ scaleX: progress }}
-        className="absolute inset-x-0 bottom-0 h-px origin-left bg-accent"
+        style={{ scaleX: progress, background: "linear-gradient(90deg, var(--pink), var(--yellow), var(--mint), var(--blue))" }}
+        className="absolute inset-x-0 -bottom-[2.5px] h-1 origin-left"
       />
     </header>
   );

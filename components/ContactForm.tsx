@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { CircleAlert, CircleCheck, LoaderCircle, Send } from "lucide-react";
 import { useState, type FormEvent } from "react";
+import { burst } from "./confetti";
 
 // Web3Forms emails submissions to you for free, with no server of our own.
 // Get an access key at https://web3forms.com and set NEXT_PUBLIC_WEB3FORMS_KEY.
@@ -23,7 +24,7 @@ function validate(data: FormData): Errors {
 }
 
 const inputClass =
-  "mt-2 block w-full rounded-lg border bg-background px-4 py-3 text-base outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-accent";
+  "mt-2 block w-full rounded-xl border-[2.5px] bg-background px-4 py-3 text-base outline-none transition-[box-shadow,transform] duration-200 placeholder:text-muted-foreground/70 focus:-translate-y-0.5 focus:shadow-[4px_4px_0_var(--pink)]";
 
 export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
   const [status, setStatus] = useState<Status>("idle");
@@ -56,6 +57,8 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
       const json = await res.json();
       if (!json.success) throw new Error(json.message);
       setStatus("sent");
+      const r = form.getBoundingClientRect();
+      burst(r.left + r.width / 2, Math.min(r.bottom - 60, window.innerHeight * 0.6), 30);
       form.reset();
     } catch {
       setStatus("error");
@@ -67,7 +70,7 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
     id: `contact-${name}`,
     "aria-invalid": errors[name] ? true : undefined,
     "aria-describedby": errors[name] ? `contact-${name}-error` : undefined,
-    className: `${inputClass} ${errors[name] ? "border-destructive" : "border-border"}`,
+    className: `${inputClass} ${errors[name] ? "border-destructive" : "border-line"}`,
   });
 
   const errorText = (name: keyof Errors) =>
@@ -84,18 +87,18 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <label htmlFor="contact-name" className="text-sm font-medium">Name</label>
+          <label htmlFor="contact-name" className="text-sm font-bold">Name</label>
           <input type="text" autoComplete="name" placeholder="Jane Doe" {...field("name")} />
           {errorText("name")}
         </div>
         <div>
-          <label htmlFor="contact-email" className="text-sm font-medium">Email</label>
+          <label htmlFor="contact-email" className="text-sm font-bold">Email</label>
           <input type="email" autoComplete="email" placeholder="jane@company.com" {...field("email")} />
           {errorText("email")}
         </div>
       </div>
       <div>
-        <label htmlFor="contact-message" className="text-sm font-medium">Message</label>
+        <label htmlFor="contact-message" className="text-sm font-bold">Message</label>
         <textarea rows={5} placeholder="Tell me about the role or project..." {...field("message")} />
         {errorText("message")}
       </div>
@@ -104,7 +107,7 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
         <button
           type="submit"
           disabled={status === "sending"}
-          className="inline-flex h-11 cursor-pointer items-center gap-2 rounded-lg bg-accent px-6 text-sm font-semibold text-on-accent transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-70"
+          className="btn btn-pink"
         >
           {status === "sending" ? (
             <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />
@@ -117,12 +120,12 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
         <div aria-live="polite" className="text-sm">
           <AnimatePresence mode="wait">
             {status === "sent" && (
-              <motion.p key="sent" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="inline-flex items-center gap-1.5 text-accent">
+              <motion.p key="sent" initial={{ opacity: 0, y: 10, scale: 0.8 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }} transition={{ type: "spring", stiffness: 400, damping: 14 }} className="inline-flex items-center gap-1.5 font-bold text-accent">
                 <CircleCheck className="size-4" aria-hidden="true" /> Thanks! I&apos;ll get back to you soon.
               </motion.p>
             )}
             {status === "error" && (
-              <motion.p key="error" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="inline-flex items-center gap-1.5 text-destructive">
+              <motion.p key="error" initial={{ opacity: 0, y: 10, scale: 0.8 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }} transition={{ type: "spring", stiffness: 400, damping: 14 }} className="inline-flex items-center gap-1.5 text-destructive">
                 <CircleAlert className="size-4" aria-hidden="true" /> Something went wrong. Email me at{" "}
                 <a href={`mailto:${fallbackEmail}`} className="underline">{fallbackEmail}</a>.
               </motion.p>

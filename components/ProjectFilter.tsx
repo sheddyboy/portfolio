@@ -26,7 +26,7 @@ export function ProjectFilter({ projects }: { projects: Project[] }) {
 
   return (
     <div>
-      <div role="group" aria-label="Filter projects by tag" className="flex flex-wrap gap-2">
+      <div role="group" aria-label="Filter projects by tag" className="flex flex-wrap gap-3">
         {tabs.map((tab) => {
           const selected = tab.value === active;
           return (
@@ -35,37 +35,37 @@ export function ProjectFilter({ projects }: { projects: Project[] }) {
               type="button"
               aria-pressed={selected}
               onClick={() => setActive(tab.value)}
-              className={`relative cursor-pointer rounded-full px-4 py-2 font-mono text-sm transition-colors ${
-                selected ? "text-on-accent" : "text-muted-foreground hover:text-foreground"
+              className={`sticker-sm relative cursor-pointer rounded-full px-4 py-2 font-mono text-sm font-bold transition-transform duration-200 [transition-timing-function:cubic-bezier(0.34,1.7,0.64,1)] hover:-translate-y-0.5 hover:-rotate-2 active:scale-90 ${
+                selected ? "text-ink" : "bg-card text-foreground"
               }`}
             >
               {selected && (
                 <motion.span
                   layoutId="active-tab"
-                  className="absolute inset-0 rounded-full bg-accent"
-                  transition={{ type: "spring", stiffness: 400, damping: 32 }}
+                  className="absolute -inset-[2.5px] rounded-full border-[2.5px] border-line bg-pink"
+                  transition={{ type: "spring", stiffness: 420, damping: 22 }}
                 />
               )}
               <span className="relative">
-                {tab.label} <span className="opacity-70">{tab.count}</span>
+                {tab.label} <span className="opacity-80">{tab.count}</span>
               </span>
             </button>
           );
         })}
       </div>
 
-      <motion.ul layout className="mt-8 grid gap-6 sm:grid-cols-2" aria-live="polite">
+      <motion.ul layout className="mt-10 grid gap-8 sm:grid-cols-2" aria-live="polite">
         <AnimatePresence mode="popLayout" initial={false}>
           {visible.map((project, i) => (
             <motion.li
               key={project.slug}
               layout
-              initial={{ opacity: 0, scale: 0.96, y: 12 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.15 } }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0, scale: 0.8, y: 30, rotate: -3 }}
+              animate={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
+              exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.15 } }}
+              transition={{ type: "spring", stiffness: 260, damping: 16 }}
             >
-              <ProjectCard project={project} priority={i < 2} />
+              <ProjectCard project={project} priority={i < 2} index={i} />
             </motion.li>
           ))}
         </AnimatePresence>
