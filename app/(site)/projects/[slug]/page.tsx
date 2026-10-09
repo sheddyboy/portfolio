@@ -1,11 +1,13 @@
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GithubIcon } from "@/components/BrandIcons";
 import { CaseStudy } from "@/components/CaseStudy";
+import { Magnetic } from "@/components/Magnetic";
+import { ParallaxImage } from "@/components/ParallaxImage";
 import { Reveal } from "@/components/Reveal";
+import { SplitWords } from "@/components/SplitWords";
 import { getProject, getProjects } from "@/lib/content";
 import { tagLabel } from "@/lib/tags";
 
@@ -34,49 +36,64 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
   const year = project.date ? new Date(`${project.date}T00:00:00Z`).getUTCFullYear() : null;
 
   return (
-    <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
-      <Link href="/#projects" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
+    <article className="wrap py-10 sm:py-14">
+      <Link href="/#projects" className="mono-label link-sweep inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground">
         <ArrowLeft className="size-4" aria-hidden="true" /> All projects
       </Link>
 
-      <Reveal>
-        <header className="mt-6">
-          <p className="font-mono text-sm text-accent">
-            {year}
-            {project.tags.length > 0 && ` / ${project.tags.map(tagLabel).join(", ")}`}
+      <header className="mt-6">
+        <Reveal>
+          <p className="mono-label flex items-center gap-3 text-accent">
+            <span>
+              {year}
+              {project.tags.length > 0 && ` / ${project.tags.map(tagLabel).join(", ")}`}
+            </span>
+            <span aria-hidden="true" className="h-0.5 flex-1 bg-foreground" />
           </p>
-          <h1 className="mt-2 text-4xl font-semibold tracking-tight text-balance sm:text-5xl">{project.title}</h1>
-          <p className="mt-4 text-lg leading-relaxed text-muted-foreground text-pretty">{project.description}</p>
-
-          <div className="mt-6 flex flex-wrap gap-3">
+        </Reveal>
+        <SplitWords
+          as="h1"
+          text={project.title}
+          immediate
+          className="display mt-4 text-[clamp(3.5rem,13vw,13rem)] leading-[0.88] text-balance"
+        />
+        <div className="mt-8 grid gap-8 lg:grid-cols-[1.5fr_1fr] lg:items-end">
+          <Reveal delay={0.15}>
+            <p className="max-w-3xl border-l-4 border-accent pl-4 text-xl leading-relaxed text-pretty sm:text-2xl">
+              {project.description}
+            </p>
+          </Reveal>
+          <Reveal delay={0.25} className="flex flex-wrap gap-3 lg:justify-end">
             {project.liveUrl && (
-              <a href={project.liveUrl} target="_blank" rel="noreferrer" className="inline-flex h-11 items-center gap-2 rounded-lg bg-accent px-5 text-sm font-semibold text-on-accent transition-opacity hover:opacity-90">
-                Visit live site <ArrowUpRight className="size-4" aria-hidden="true" />
-                <span className="sr-only">(opens in new tab)</span>
-              </a>
+              <Magnetic>
+                <a href={project.liveUrl} target="_blank" rel="noreferrer" className="btn btn-solid">
+                  Visit live site <ArrowUpRight className="size-4" aria-hidden="true" />
+                  <span className="sr-only">(opens in new tab)</span>
+                </a>
+              </Magnetic>
             )}
             {project.githubUrl && (
-              <a href={project.githubUrl} target="_blank" rel="noreferrer" className="inline-flex h-11 items-center gap-2 rounded-lg border border-border px-5 text-sm font-medium transition-colors hover:border-accent">
-                <GithubIcon className="size-4" /> View source
-                <span className="sr-only">(opens in new tab)</span>
-              </a>
+              <Magnetic>
+                <a href={project.githubUrl} target="_blank" rel="noreferrer" className="btn btn-ghost">
+                  <GithubIcon className="size-4" /> View source
+                  <span className="sr-only">(opens in new tab)</span>
+                </a>
+              </Magnetic>
             )}
-          </div>
-        </header>
-      </Reveal>
+          </Reveal>
+        </div>
+      </header>
 
       {project.image && (
-        <Reveal delay={0.05} className="relative mt-10 aspect-[16/10] overflow-hidden rounded-2xl border border-border bg-muted">
-          <Image src={project.image} alt={`Screenshot of ${project.title}`} fill priority sizes="(min-width: 768px) 720px, 100vw" className="object-cover" />
-        </Reveal>
+        <ParallaxImage src={project.image} alt={`Screenshot of ${project.title}`} />
       )}
 
       {project.stack.length > 0 && (
-        <Reveal className="mt-10">
-          <h2 className="font-mono text-xs tracking-wide text-muted-foreground uppercase">Tech stack</h2>
-          <ul className="mt-3 flex flex-wrap gap-2">
+        <Reveal className="mt-12 grid gap-4 border-t-2 border-foreground pt-6 lg:grid-cols-12 lg:gap-12">
+          <h2 className="mono-label text-accent lg:col-span-5">Tech stack</h2>
+          <ul className="flex flex-wrap gap-2 lg:col-span-7">
             {project.stack.map((tech) => (
-              <li key={tech} className="rounded-lg border border-border bg-card px-3 py-1.5 font-mono text-sm">
+              <li key={tech} className="mono-label border-2 border-foreground px-3 py-1.5 transition-colors hover:bg-foreground hover:text-background">
                 {tech}
               </li>
             ))}
@@ -84,9 +101,9 @@ export default async function ProjectPage({ params }: PageProps<"/projects/[slug
         </Reveal>
       )}
 
-      <Reveal className="mt-12">
+      <div className="mt-12">
         <CaseStudy body={project.body} />
-      </Reveal>
+      </div>
     </article>
   );
 }

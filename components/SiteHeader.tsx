@@ -3,7 +3,7 @@
 import { AnimatePresence, motion, useScroll, useSpring } from "motion/react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ThemeToggle } from "./ThemeToggle";
 
 const NAV = [
@@ -24,25 +24,35 @@ export function SiteHeader({ name }: { name: string }) {
     .join("")
     .slice(0, 2);
 
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/75 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" className="font-mono text-sm font-semibold tracking-tight">
-          <span className="text-accent">~/</span>
-          {initials.toLowerCase() || "home"}
+    <header className="sticky top-0 z-50 border-b-2 border-foreground bg-background">
+      <div className="wrap flex h-16 items-center justify-between">
+        <Link href="/" className="display flex items-center gap-2 text-2xl" onClick={() => setOpen(false)}>
+          <span aria-hidden="true" className="size-3 bg-accent" />
+          {initials || "home"}
         </Link>
 
         <nav aria-label="Main" className="hidden items-center gap-1 sm:flex">
-          {NAV.map((item) => (
+          {NAV.map((item, i) => (
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="mono-label px-3 py-2 text-foreground transition-colors hover:text-accent"
             >
-              {item.label}
+              <span aria-hidden="true" className="mr-1.5 text-muted-foreground">
+                0{i + 1}
+              </span>
+              <span className="link-sweep">{item.label}</span>
             </Link>
           ))}
-          <div className="ml-2">
+          <div className="ml-3">
             <ThemeToggle />
           </div>
         </nav>
@@ -55,7 +65,7 @@ export function SiteHeader({ name }: { name: string }) {
             aria-expanded={open}
             aria-controls="mobile-nav"
             aria-label={open ? "Close menu" : "Open menu"}
-            className="grid size-10 cursor-pointer place-items-center rounded-lg border border-border"
+            className="grid size-10 cursor-pointer place-items-center border-2 border-foreground transition-colors hover:bg-foreground hover:text-background"
           >
             {open ? <X className="size-4" /> : <Menu className="size-4" />}
           </button>
@@ -67,20 +77,21 @@ export function SiteHeader({ name }: { name: string }) {
           <motion.nav
             id="mobile-nav"
             aria-label="Mobile"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden border-t border-border sm:hidden"
+            initial={{ clipPath: "inset(0 0 100% 0)" }}
+            animate={{ clipPath: "inset(0 0 0% 0)" }}
+            exit={{ clipPath: "inset(0 0 100% 0)" }}
+            transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
+            className="fixed inset-x-0 top-16 h-[calc(100dvh-4rem)] overflow-y-auto bg-background sm:hidden"
           >
-            <ul className="flex flex-col px-4 py-2">
-              {NAV.map((item) => (
-                <li key={item.href}>
+            <ul className="wrap flex flex-col py-6">
+              {NAV.map((item, i) => (
+                <li key={item.href} className="border-b-2 border-foreground">
                   <Link
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="block py-3 text-muted-foreground hover:text-foreground"
+                    className="display flex items-baseline gap-4 py-4 text-6xl hover:text-accent"
                   >
+                    <span className="mono-label text-muted-foreground">0{i + 1}</span>
                     {item.label}
                   </Link>
                 </li>
@@ -93,7 +104,7 @@ export function SiteHeader({ name }: { name: string }) {
       <motion.div
         aria-hidden="true"
         style={{ scaleX: progress }}
-        className="absolute inset-x-0 bottom-0 h-px origin-left bg-accent"
+        className="absolute inset-x-0 bottom-[-2px] h-[3px] origin-left bg-accent"
       />
     </header>
   );

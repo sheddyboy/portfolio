@@ -2,33 +2,32 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* Design tokens. Dark is the default; .light overrides via the theme toggle. */
+/* Cinematic brutalist tokens. Dark is the default; .light overrides via the theme toggle.
+   Contrast (WCAG): dark fg 17:1, muted 7.9:1, accent on bg 6:1; light fg 17:1, muted 6.7:1, accent 5.1:1. */
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --muted: #e2e8f0;
-  --muted-foreground: #475569;
-  --border: #cbd5e1;
-  --accent: #15803d;
-  --accent-soft: rgb(21 128 61 / 0.1);
-  --on-accent: #ffffff;
+  --background: #f2efe8;
+  --foreground: #0a0a0a;
+  --card: #e8e4da;
+  --muted: #dcd7ca;
+  --muted-foreground: #55524b;
+  --border: #bdb8aa;
+  --accent: #c42800;
+  --accent-soft: rgb(196 40 0 / 0.1);
+  --on-accent: #f2efe8;
   --destructive: #b91c1c;
-  --grid: rgb(15 23 42 / 0.05);
 }
 
 .dark {
-  --background: #0b1120;
-  --foreground: #f8fafc;
-  --card: #111a2e;
-  --muted: #1e293b;
-  --muted-foreground: #94a3b8;
-  --border: #263247;
-  --accent: #22c55e;
-  --accent-soft: rgb(34 197 94 / 0.12);
-  --on-accent: #0f172a;
-  --destructive: #f87171;
-  --grid: rgb(148 163 184 / 0.06);
+  --background: #0a0a0a;
+  --foreground: #f2efe8;
+  --card: #141414;
+  --muted: #1f1f1f;
+  --muted-foreground: #a3a09a;
+  --border: #333330;
+  --accent: #ff4d1c;
+  --accent-soft: rgb(255 77 28 / 0.14);
+  --on-accent: #0a0a0a;
+  --destructive: #ff7a7a;
 }
 
 @theme inline {
@@ -42,18 +41,20 @@
   --color-accent-soft: var(--accent-soft);
   --color-on-accent: var(--on-accent);
   --color-destructive: var(--destructive);
-  --font-sans: var(--font-plex-sans);
+  --font-sans: var(--font-archivo);
+  --font-display: var(--font-anton);
   --font-mono: var(--font-jetbrains-mono);
 }
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 4.5rem;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
+  overflow-x: clip;
   transition: background-color 200ms ease, color 200ms ease;
 }
 
@@ -63,17 +64,140 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 3px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
-.bg-grid {
-  background-image:
-    linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse at 50% 0%, black 30%, transparent 75%);
+.wrap {
+  margin-inline: auto;
+  max-width: 96rem;
+  padding-inline: 1.25rem;
+}
+@media (min-width: 640px) {
+  .wrap {
+    padding-inline: 2rem;
+  }
+}
+
+.display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: 0.002em;
+}
+
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 2px var(--foreground);
+}
+
+.mono-label {
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Buttons: hard edges, inverted on hover. */
+.btn {
+  display: inline-flex;
+  height: 3.25rem;
+  cursor: pointer;
+  align-items: center;
+  gap: 0.6rem;
+  border: 2px solid var(--foreground);
+  padding-inline: 1.5rem;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+.btn-solid {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+.btn-solid:hover {
+  background: var(--foreground);
+  border-color: var(--foreground);
+  color: var(--background);
+}
+.btn-ghost {
+  color: var(--foreground);
+}
+.btn-ghost:hover {
+  background: var(--foreground);
+  color: var(--background);
+}
+.btn:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.icon-btn {
+  display: grid;
+  width: 3.25rem;
+  height: 3.25rem;
+  place-items: center;
+  border: 2px solid var(--foreground);
+  transition: background-color 180ms ease, color 180ms ease;
+}
+.icon-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Sweeping underline for text links. */
+.link-sweep {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0% 2px no-repeat;
+  transition: background-size 300ms ease;
+}
+.link-sweep:hover,
+.link-sweep:focus-visible {
+  background-size: 100% 2px;
+}
+
+/* Marquee strip. */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 45s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pinned scroll scenes: a tall track with a sticky stage inside. */
+.pin-track {
+  height: 240vh;
+}
+.pin-stage {
+  position: sticky;
+  top: 4rem;
+  display: flex;
+  height: calc(100svh - 4rem);
+  align-items: center;
+}
+
+/* Colour returns to project images on hover, only where hover exists. */
+@media (hover: hover) {
+  .img-mono {
+    filter: grayscale(1) contrast(1.1);
+    transition: filter 400ms ease;
+  }
+  .chapter:hover .img-mono,
+  .chapter:focus-within .img-mono {
+    filter: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -84,38 +208,50 @@ body {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  /* No pinning, and the marquee becomes a static wrapped list. */
+  .pin-track {
+    height: auto;
+    padding-block: 5rem;
+  }
+  .pin-stage {
+    position: static;
+    height: auto;
+  }
+  .marquee-track {
+    width: auto;
+    animation: none;
+  }
+  .marquee-dup {
+    display: none;
+  }
+  .marquee ul {
+    flex-wrap: wrap;
   }
 }
 
 /* Case study body (Markdoc output) */
 .case-study {
+  font-size: 1.125rem;
   line-height: 1.75;
   color: var(--muted-foreground);
+  max-width: 44rem;
 }
 .case-study > * + * {
   margin-top: 1.25em;
 }
-.case-study h2 {
-  margin-top: 2.25em;
-  font-size: 1.5rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--foreground);
-}
 .case-study h3 {
   margin-top: 1.75em;
-  font-size: 1.2rem;
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  text-transform: uppercase;
   color: var(--foreground);
-}
-.case-study h2:first-child,
-.case-study h3:first-child {
-  margin-top: 0;
 }
 .case-study strong {
   color: var(--foreground);
-  font-weight: 600;
+  font-weight: 700;
 }
 .case-study a {
   color: var(--accent);
@@ -124,33 +260,55 @@ body {
 }
 .case-study ul,
 .case-study ol {
-  padding-left: 1.25em;
+  padding-left: 0;
+  list-style: none;
 }
-.case-study ul {
-  list-style: disc;
+.case-study li {
+  border-top: 1px solid var(--border);
+  padding: 0.9em 0 0.9em 1.75em;
+  position: relative;
+}
+.case-study li:last-child {
+  border-bottom: 1px solid var(--border);
+}
+.case-study ul > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.45em;
+  width: 0.7em;
+  height: 0.7em;
+  background: var(--accent);
 }
 .case-study ol {
-  list-style: decimal;
+  counter-reset: item;
 }
-.case-study li + li {
-  margin-top: 0.5em;
+.case-study ol > li {
+  counter-increment: item;
 }
-.case-study li::marker {
+.case-study ol > li::before {
+  content: counter(item, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  font-family: var(--font-jetbrains-mono), monospace;
+  font-size: 0.75rem;
+  top: 1.5em;
   color: var(--accent);
 }
+.case-study ol > li {
+  padding-left: 2.5em;
+}
 .case-study code {
-  font-family: var(--font-mono);
+  font-family: var(--font-jetbrains-mono), monospace;
   font-size: 0.875em;
   padding: 0.15em 0.4em;
-  border-radius: 6px;
   background: var(--muted);
   color: var(--foreground);
 }
 .case-study pre {
   overflow-x: auto;
   padding: 1rem 1.25rem;
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  border: 2px solid var(--foreground);
   background: var(--card);
 }
 .case-study pre code {
@@ -158,13 +316,12 @@ body {
   background: none;
 }
 .case-study blockquote {
-  border-left: 2px solid var(--accent);
+  border-left: 4px solid var(--accent);
   padding-left: 1rem;
-  font-style: italic;
+  color: var(--foreground);
 }
 .case-study img {
-  border-radius: 12px;
-  border: 1px solid var(--border);
+  border: 2px solid var(--foreground);
 }
 .case-study hr {
   border-color: var(--border);

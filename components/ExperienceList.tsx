@@ -6,25 +6,26 @@ const fmt = (d: string | null) =>
 
 export function ExperienceList({ items }: { items: Experience[] }) {
   return (
-    <ol className="relative border-l border-border">
-      {items.map((job, i) => (
-        <li key={job.slug} className="relative pb-10 pl-8 last:pb-0">
-          <span aria-hidden="true" className="absolute top-1.5 -left-[5px] size-2.5 rounded-full bg-accent ring-4 ring-background" />
-          <Reveal delay={i * 0.05}>
-            <p className="font-mono text-xs tracking-wide text-muted-foreground uppercase">
+    <ol className="border-b-2 border-foreground">
+      {items.map((job) => (
+        <li key={job.slug} className="group border-t-2 border-foreground">
+          <Reveal className="grid gap-4 py-8 sm:py-10 lg:grid-cols-[16rem_1fr] lg:gap-10">
+            <p className="mono-label text-accent">
               {fmt(job.startDate)} &ndash; {fmt(job.endDate)}
             </p>
-            <h3 className="mt-1 text-lg font-semibold">
-              {job.role} <span className="text-accent">@ {job.company}</span>
-            </h3>
-            <ul className="mt-3 space-y-2 text-sm leading-relaxed text-muted-foreground">
-              {job.bullets.map((b, j) => (
-                <li key={j} className="flex gap-3">
-                  <span aria-hidden="true" className="mt-2 size-1 shrink-0 rounded-full bg-muted-foreground" />
-                  {b}
-                </li>
-              ))}
-            </ul>
+            <div>
+              <h3 className="display text-[clamp(2rem,4.5vw,4rem)] transition-transform duration-300 group-hover:translate-x-2">
+                {job.role} <span className="text-accent">@ {job.company}</span>
+              </h3>
+              <ul className="mt-5 max-w-3xl space-y-3 text-muted-foreground">
+                {job.bullets.map((b, j) => (
+                  <li key={j} className="flex gap-3 leading-relaxed">
+                    <span aria-hidden="true" className="mt-2.5 size-2 shrink-0 bg-accent" />
+                    {b}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </Reveal>
         </li>
       ))}

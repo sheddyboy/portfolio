@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { CircleAlert, CircleCheck, LoaderCircle, Send } from "lucide-react";
 import { useState, type FormEvent } from "react";
+import { Magnetic } from "./Magnetic";
 
 // Web3Forms emails submissions to you for free, with no server of our own.
 // Get an access key at https://web3forms.com and set NEXT_PUBLIC_WEB3FORMS_KEY.
@@ -23,7 +24,7 @@ function validate(data: FormData): Errors {
 }
 
 const inputClass =
-  "mt-2 block w-full rounded-lg border bg-background px-4 py-3 text-base outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-accent";
+  "mt-2 block w-full border-2 bg-background px-4 py-3.5 text-lg outline-none transition-colors placeholder:text-muted-foreground focus:border-accent focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
   const [status, setStatus] = useState<Status>("idle");
@@ -67,7 +68,7 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
     id: `contact-${name}`,
     "aria-invalid": errors[name] ? true : undefined,
     "aria-describedby": errors[name] ? `contact-${name}-error` : undefined,
-    className: `${inputClass} ${errors[name] ? "border-destructive" : "border-border"}`,
+    className: `${inputClass} ${errors[name] ? "border-destructive" : "border-foreground"}`,
   });
 
   const errorText = (name: keyof Errors) =>
@@ -78,33 +79,34 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
     );
 
   return (
-    <form onSubmit={onSubmit} noValidate className="space-y-5">
+    <form onSubmit={onSubmit} noValidate className="space-y-6">
       {/* Honeypot: bots fill it, people never see it. */}
       <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" />
 
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <label htmlFor="contact-name" className="text-sm font-medium">Name</label>
+          <label htmlFor="contact-name" className="mono-label">Name</label>
           <input type="text" autoComplete="name" placeholder="Jane Doe" {...field("name")} />
           {errorText("name")}
         </div>
         <div>
-          <label htmlFor="contact-email" className="text-sm font-medium">Email</label>
+          <label htmlFor="contact-email" className="mono-label">Email</label>
           <input type="email" autoComplete="email" placeholder="jane@company.com" {...field("email")} />
           {errorText("email")}
         </div>
       </div>
       <div>
-        <label htmlFor="contact-message" className="text-sm font-medium">Message</label>
+        <label htmlFor="contact-message" className="mono-label">Message</label>
         <textarea rows={5} placeholder="Tell me about the role or project..." {...field("message")} />
         {errorText("message")}
       </div>
 
       <div className="flex flex-wrap items-center gap-4">
+        <Magnetic>
         <button
           type="submit"
           disabled={status === "sending"}
-          className="inline-flex h-11 cursor-pointer items-center gap-2 rounded-lg bg-accent px-6 text-sm font-semibold text-on-accent transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-70"
+          className="btn btn-solid"
         >
           {status === "sending" ? (
             <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />
@@ -113,6 +115,7 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
           )}
           {status === "sending" ? "Sending..." : "Send message"}
         </button>
+        </Magnetic>
 
         <div aria-live="polite" className="text-sm">
           <AnimatePresence mode="wait">
@@ -124,7 +127,7 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
             {status === "error" && (
               <motion.p key="error" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="inline-flex items-center gap-1.5 text-destructive">
                 <CircleAlert className="size-4" aria-hidden="true" /> Something went wrong. Email me at{" "}
-                <a href={`mailto:${fallbackEmail}`} className="underline">{fallbackEmail}</a>.
+                <a href={`mailto:${fallbackEmail}`} className="underline underline-offset-4">{fallbackEmail}</a>.
               </motion.p>
             )}
           </AnimatePresence>

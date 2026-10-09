@@ -2,7 +2,9 @@ import { ArrowLeft, Download } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Magnetic } from "@/components/Magnetic";
 import { ResumeViewer } from "@/components/ResumeViewer";
+import { SplitWords } from "@/components/SplitWords";
 import { getProfile } from "@/lib/content";
 
 export const metadata: Metadata = { title: "Resume" };
@@ -12,17 +14,19 @@ export default async function ResumePage() {
   if (!profile.resume) notFound();
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6">
-      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+    <div className="wrap py-10 sm:py-14">
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-6">
         <div>
-          <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
+          <Link href="/" className="mono-label link-sweep inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground">
             <ArrowLeft className="size-4" aria-hidden="true" /> Back home
           </Link>
-          <h1 className="mt-2 text-3xl font-semibold tracking-tight">Resume</h1>
+          <SplitWords as="h1" text="Resume" immediate className="display mt-4 text-[clamp(5rem,16vw,14rem)] leading-[0.85]" />
         </div>
-        <a href={profile.resume} download className="inline-flex h-11 items-center gap-2 rounded-lg bg-accent px-5 text-sm font-semibold text-on-accent transition-opacity hover:opacity-90">
-          <Download className="size-4" aria-hidden="true" /> Download PDF
-        </a>
+        <Magnetic>
+          <a href={profile.resume} download className="btn btn-solid">
+            <Download className="size-4" aria-hidden="true" /> Download PDF
+          </a>
+        </Magnetic>
       </div>
       <ResumeViewer src={profile.resume} title={`${profile.name} resume`} />
     </div>

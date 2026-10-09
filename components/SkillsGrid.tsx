@@ -3,20 +3,23 @@ import { Reveal } from "./Reveal";
 
 export function SkillsGrid({ groups }: { groups: SkillGroup[] }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {groups.map((group, i) => (
-        <Reveal key={group.name} delay={(i % 3) * 0.06} className="h-full">
-          <section className="h-full rounded-2xl border border-border bg-card p-5 transition-colors hover:border-accent/50">
-            <h3 className="font-mono text-sm font-semibold text-accent">{group.name}</h3>
-            <ul className="mt-4 flex flex-wrap gap-2">
+    <div className="border-b-2 border-foreground">
+      {groups.map((group) => (
+        <section key={group.name} className="border-t-2 border-foreground">
+          <Reveal className="grid gap-4 py-7 lg:grid-cols-[22rem_1fr] lg:gap-10">
+            <h3 className="display text-3xl text-accent sm:text-4xl">{group.name}</h3>
+            <ul className="flex flex-wrap gap-2">
               {group.items.map((skill) => (
-                <li key={skill} className="rounded-md border border-border bg-background px-2.5 py-1 text-sm">
+                <li
+                  key={skill}
+                  className="mono-label border-2 border-foreground px-3 py-1.5 transition-colors hover:bg-foreground hover:text-background"
+                >
                   {skill}
                 </li>
               ))}
             </ul>
-          </section>
-        </Reveal>
+          </Reveal>
+        </section>
       ))}
     </div>
   );
