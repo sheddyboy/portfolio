@@ -1,8 +1,7 @@
 {
   "title": "DocRAG",
   "description": "Local-first RAG knowledge platform with project-isolated knowledge bases, async document ingestion, hybrid dense + sparse retrieval with cross-encoder reranking, and citation-aware streamed chat.",
-  "liveUrl": null,
-  "githubUrl": "https://github.com/",
+  "githubUrl": "https://github.com/sheddyboy/DocRAG",
   "image": "/images/projects/docrag/image.png",
   "tags": [
     "ai",
@@ -10,8 +9,6 @@
     "python",
     "fastapi"
   ],
-  "featured": true,
-  "date": "2026-06-01",
   "stack": [
     "FastAPI",
     "PostgreSQL",
@@ -20,5 +17,7 @@
     "Celery",
     "Docker",
     "Pytest"
-  ]
+  ],
+  "featured": true,
+  "date": "2026-06-01"
 }
