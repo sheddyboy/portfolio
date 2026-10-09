@@ -23,7 +23,7 @@ function validate(data: FormData): Errors {
 }
 
 const inputClass =
-  "mt-2 block w-full rounded-lg border bg-background px-4 py-3 text-base outline-none transition-colors placeholder:text-muted-foreground/70 focus:border-accent";
+  "mt-2 block w-full rounded-2xl border bg-muted px-4 py-3 text-base outline-none transition-[border-color,box-shadow] placeholder:text-muted-foreground/80 focus:border-accent focus:shadow-[0_0_0_3px_var(--accent-soft)] focus-visible:outline-none";
 
 export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
   const [status, setStatus] = useState<Status>("idle");
@@ -104,7 +104,7 @@ export function ContactForm({ fallbackEmail }: { fallbackEmail: string }) {
         <button
           type="submit"
           disabled={status === "sending"}
-          className="inline-flex h-11 cursor-pointer items-center gap-2 rounded-lg bg-accent px-6 text-sm font-semibold text-on-accent transition-opacity hover:opacity-90 disabled:cursor-wait disabled:opacity-70"
+          className="btn btn-primary px-6 disabled:cursor-wait disabled:opacity-70"
         >
           {status === "sending" ? (
             <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />

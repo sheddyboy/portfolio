@@ -1,6 +1,6 @@
 import { Award, ExternalLink, GraduationCap } from "lucide-react";
 import type { Certification, Education } from "@/lib/content";
-import { Reveal } from "./Reveal";
+import { Glass } from "./Glass";
 
 export function Credentials({
   education,
@@ -10,16 +10,16 @@ export function Credentials({
   certifications: Certification[];
 }) {
   return (
-    <div className="grid gap-10 lg:grid-cols-[1fr_1.25fr]">
+    <div className="grid gap-4 lg:grid-cols-[1fr_1.25fr]">
       {education.length > 0 && (
         <div>
-          <h3 className="flex items-center gap-2 font-mono text-sm font-semibold text-muted-foreground uppercase">
-            <GraduationCap className="size-4 text-accent" aria-hidden="true" /> Education
-          </h3>
-          <Reveal>
-            <ul className="mt-4 space-y-4">
+          <Glass className="h-full p-5 sm:p-6">
+            <h3 className="flex items-center gap-2 font-mono text-sm font-semibold text-muted-foreground uppercase">
+              <GraduationCap className="size-4 text-accent" aria-hidden="true" /> Education
+            </h3>
+            <ul className="mt-4 space-y-3">
               {education.map((ed) => (
-                <li key={ed.slug} className="rounded-2xl border border-border bg-card p-5">
+                <li key={ed.slug} className="rounded-2xl border border-border bg-muted p-4">
                   <p className="font-mono text-xs text-muted-foreground">
                     {ed.startYear} &ndash; {ed.endYear ?? "Present"}
                     {ed.endYear && ed.endYear > new Date().getFullYear() && " (expected)"}
@@ -32,19 +32,19 @@ export function Credentials({
                 </li>
               ))}
             </ul>
-          </Reveal>
+          </Glass>
         </div>
       )}
 
       {certifications.length > 0 && (
         <div>
-          <h3 className="flex items-center gap-2 font-mono text-sm font-semibold text-muted-foreground uppercase">
-            <Award className="size-4 text-accent" aria-hidden="true" /> Certifications
-          </h3>
-          <Reveal delay={0.08}>
-            <ul className="mt-4 divide-y divide-border rounded-2xl border border-border bg-card">
+          <Glass delay={0.08} className="h-full p-5 sm:p-6">
+            <h3 className="flex items-center gap-2 font-mono text-sm font-semibold text-muted-foreground uppercase">
+              <Award className="size-4 text-accent" aria-hidden="true" /> Certifications
+            </h3>
+            <ul className="mt-4 divide-y divide-border">
               {certifications.map((cert) => (
-                <li key={cert.slug} className="flex items-start justify-between gap-4 p-5">
+                <li key={cert.slug} className="flex items-start justify-between gap-4 py-4 first:pt-0 last:pb-0">
                   <div>
                     <p className="font-medium">{cert.name}</p>
                     <p className="text-sm text-muted-foreground">
@@ -65,7 +65,7 @@ export function Credentials({
                 </li>
               ))}
             </ul>
-          </Reveal>
+          </Glass>
         </div>
       )}
     </div>
