@@ -1,0 +1,39 @@
+### The problem
+
+Customer Success agents lose hours searching docs, runbooks and old tickets for answers they have found before. I built an assistant that answers from the company knowledge base and cites exactly which documents it used, so an agent can trust the answer and verify it in seconds.
+
+### What it does
+
+Ask a question and get back a structured answer: the **answer**, the **sources** it relied on, and a **confidence** level (low, medium or high). It runs entirely on a laptop with no API keys. Ollama serves the models and Qdrant runs embedded as a folder.
+
+### How it works
+
+**1. Ingestion.** The knowledge base has three formats: Markdown docs, PDF runbooks (5 of them scanned images) and HTML support tickets. Each gets its own parser, including OCR for the scans. Chunking depends on the document type. Product docs are split on their headings, while short runbooks and tickets stay whole, because cutting them loses meaning. Every chunk starts with its document ID, and chunk IDs are deterministic, so re-ingesting never creates duplicates.
+
+**2. Hybrid retrieval.** Each chunk is stored with two vectors: a dense embedding for meaning and a BM25 vector for exact terms like plan names, limits and error codes. A question searches both, and the rankings are merged with reciprocal rank fusion. Both indexes are kept, so I can also run dense-only or keyword-only search and measure what hybrid adds.
+
+**3. Grounded generation.** The model must answer from the retrieved context only and reply in a fixed JSON schema. Then plain code checks the result: any cited source that wasn't actually retrieved is dropped, and confidence can only be lowered, never raised.
+
+### Decisions worth calling out
+
+- **Citations are verified in code, not trusted.** A prompt can ask a model not to invent sources, but only a check can guarantee it.
+- **A different model grades the answers.** The judge model is separate from the generator, so a model never marks its own work.
+- **Fully local by design.** Nothing leaves the machine, and swapping a model is a one-line setting.
+
+### How I measured it
+
+I built an evaluation harness that runs a 50-question test set and scores three things:
+
+- **Retrieval**, with deterministic metrics: context precision, recall and hit rate.
+- **Citations**, with deterministic metrics: citation precision and recall.
+- **Answers**, judged by a separate model: faithfulness, answer relevance and correctness.
+
+It writes both machine-readable JSON and a readable Markdown report, with the weakest queries and the judge's reasoning. Runs are resumable, so a crash never loses finished work. On an initial 3-question run, context precision was 0.69, faithfulness 1.00 and answer correctness 1.00.
+
+### Testing
+
+A 55-test pytest suite runs fully offline in about 6 seconds. It covers ingestion, retrieval against a real in-memory Qdrant, citation checking, the judges (with stand-in models) and the whole harness end to end. A guard fails any test that tries to reach a live model.
+
+### What I found and what's next
+
+In the sample run, unrelated tickets and docs sometimes ranked in the top 6, and the model occasionally cited an extra loosely related document. The most likely fix is a cross-encoder reranker over the top 20 candidates, measured against the same test set.

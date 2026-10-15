@@ -1,0 +1,20 @@
+{
+  "title": "Helix Support Assistant",
+  "description": "A fully local RAG assistant that answers support questions with checked citations, using hybrid search over mixed-format docs, plus an evaluation harness and an offline test suite.",
+  "githubUrl": "https://github.com/sheddyboy/local-rag-support-bot",
+  "tags": [
+    "ai",
+    "rag",
+    "python"
+  ],
+  "stack": [
+    "Python",
+    "LangChain",
+    "Ollama",
+    "Qdrant",
+    "fastembed (BM25)",
+    "Pydantic"
+  ],
+  "featured": false,
+  "date": "2026-10-15"
+}
