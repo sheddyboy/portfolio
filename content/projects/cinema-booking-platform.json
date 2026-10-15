@@ -1,7 +1,6 @@
 {
   "title": "Cinema Booking Platform",
   "description": "Production cinema booking platform with real-time seat availability over WebSockets, Stripe payments, and Redis-cached APIs serving 10,000+ monthly users.",
-  "liveUrl": "https://example.com",
   "tags": [
     "react",
     "nextjs",
